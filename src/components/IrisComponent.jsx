@@ -1,5 +1,5 @@
-import { Box, Button, TextField, Typography } from "@mui/material";
 import React, { useState } from "react";
+import { Box, Button, TextField, Typography } from "@mui/material";
 
 const IrisComponent = () => {
     //form data
@@ -9,6 +9,8 @@ const IrisComponent = () => {
         Petal_Length: "",
         Petal_Width: "",
     });
+
+    // State to hold the prediction result
     const [result, setResult] = useState(null);
 
     //handle value when input got onchange
@@ -23,6 +25,7 @@ const IrisComponent = () => {
     //send submit form
     const handleSubmit = (e) => {
         e.preventDefault();
+        // Send a POST request to the /iris endpoint
         fetch("/iris", {
             method: "POST",
             headers: {
@@ -34,16 +37,17 @@ const IrisComponent = () => {
             .then((data) => {
                 console.log("Prediction:", data);
                 setResult(data.species)
-                // Lakukan sesuatu dengan data prediksi
             })
             .catch((error) => {
                 console.error("Error:", error);
             });
     };
 
+    // Render the form and prediction result
     return (
         <Box sx={{padding: '20px'}}>
             <Typography variant="h4" sx={{marginBottom: '20px'}}>Iris Classification</Typography>
+            {/* Form for inputting iris features */}
             <form onSubmit={handleSubmit}>
                 <TextField type="text" name="Sepal_Length" label="Sepal Length" placeholder="Sepal Length" required value={formValues.Sepal_Length} onChange={handleChange} /> <br /><br />
                 <TextField type="text" name="Sepal_Width" label="Sepal Width" placeholder="Sepal Width" required value={formValues.Sepal_Width} onChange={handleChange} /> <br /><br />
@@ -53,6 +57,7 @@ const IrisComponent = () => {
                     Predict
                 </Button><br /><br />
             </form>
+            {/* Display the prediction result */}
             <Typography variant="h6">Result: {result}</Typography>
         </Box>
     );
